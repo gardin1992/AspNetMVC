@@ -25,15 +25,91 @@ namespace WebApplication2.Controllers
             return View(listaFuncionarios);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Funcionario funcionario = funci.GetFuncionario(id);
+            if (funcionario == null)
+            {
+                return NotFound();
+            }
+            return View(funcionario);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind] Funcionario funcionario)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (ModelState.IsValid)
+            {
+                funci.AddFuncionario(funcionario);
+                return RedirectToAction("Index");
+            }
+            return View(funcionario);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Funcionario funcionario = funci.GetFuncionario(id);
+            if (funcionario == null)
+            {
+                return NotFound();
+            }
+            return View(funcionario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind]Funcionario funcionario)
+        {
+            if (id != funcionario.FuncionarioId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                funci.UpdateFuncionario(funcionario);
+                return RedirectToAction("Index");
+            }
+            return View(funcionario);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Funcionario funcionario = funci.GetFuncionario(id);
+            if (funcionario == null)
+            {
+                return NotFound();
+            }
+            return View(funcionario);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int? id)
+        {
+            funci.DeleteFuncionario(id);
+            return RedirectToAction("Index");
         }
     }
 }

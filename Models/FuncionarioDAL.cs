@@ -7,19 +7,13 @@ namespace WebApplication2.Models
 {
     public class FuncionarioDAL : IFuncionarioDAL
     {
-        string connectionString = "Data Source=(local);" + 
-            "Initial Catalog=CadastroDB;" +
-            "User Instance=True;" +
-            "User id=sa;" +
-            "Password=123456";
-
-        string connectionString1 = "Data Source=(local);Initial Catalog = CadastroDB; Integrated Security = True;";
+        string connectionString = "Data Source=(local);Initial Catalog = CadastroDB; Integrated Security = True;";
 
         public IEnumerable<Funcionario> GetAllFuncionarios()
         {
             List<Funcionario> lstfuncionario = new List<Funcionario>();
 
-            using (SqlConnection con = new SqlConnection(connectionString1))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT FuncionarioId, Nome,Cidade, Departamento,Sexo from Funcionarios", con);
                 cmd.CommandType = CommandType.Text;
